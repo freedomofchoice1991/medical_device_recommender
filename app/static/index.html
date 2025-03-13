@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Device Recommender</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Medical Device Recommender</h1>
+
+        <!-- Search Form -->
+        <div class="search-section">
+            <h2>Find Similar Devices</h2>
+            <input type="text" id="product_code" placeholder="Enter Product Code">
+            <button onclick="searchDevice()">Search</button>
+        </div>
+
+        <!-- Recommendations Table -->
+        <h2>Recommendations</h2>
+        <div id="search-explanation"></div>
+        <table id="recommendations">
+            <thead>
+                <tr>
+                    <th>Product Code</th>
+                    <th>Device Name</th>
+                    <th>Classification Code</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <!-- Grouped Classification -->
+        <h2>Devices Grouped by Classification</h2>
+        <div id="grouped-explanation"></div>
+        <button onclick="loadGrouped()">Load Grouped Data</button>
+        <table id="grouped">
+            <thead>
+                <tr>
+                    <th>Classification Code</th>
+                    <th>Device Name</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <!-- Export Buttons -->
+        <div class="export-buttons">
+            <button onclick="exportToCSV()">Export to CSV</button>
+            <button onclick="exportToPDF()">Export to PDF</button>
+        </div>
+    </div>
+</body>
+</html>

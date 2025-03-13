@@ -9,9 +9,10 @@ def get_grouped_by_classification():
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT classification_code, GROUP_CONCAT(device_name, ', ') AS devices
+        SELECT classification_code, device_name
         FROM classifications
-        GROUP BY classification_code
+        WHERE classification_code IS NOT NULL AND classification_code != ''
+        ORDER BY classification_code, device_name
     """)
 
     grouped_data = cursor.fetchall()
@@ -42,7 +43,7 @@ def find_similar_devices(product_code):
 
     # Find other devices with the same classification code (Strong match)
     cursor.execute("""
-        SELECT product_code, device_name
+        SELECT product_code, device_name, classification_code
         FROM classifications
         WHERE classification_code = ? AND product_code != ?
     """, (classification_code, product_code))
@@ -51,7 +52,7 @@ def find_similar_devices(product_code):
 
     # Find other devices in the same medical specialty (Potential alternative)
     cursor.execute("""
-        SELECT product_code, device_name
+        SELECT product_code, device_name, classification_code
         FROM classifications
         WHERE medical_specialty = ? AND classification_code != ?
     """, (medical_specialty, classification_code))
@@ -61,6 +62,12 @@ def find_similar_devices(product_code):
     conn.close()
 
     return {
-        "strong_matches": strong_matches,
-        "potential_alternatives": potential_matches
+        "strong_matches": [
+            {"product_code": p[0], "device_name": p[1], "classification_code": p[2]}
+            for p in strong_matches
+        ],
+        "potential_alternatives": [
+            {"product_code": p[0], "device_name": p[1], "classification_code": p[2]}
+            for p in potential_matches
+        ]
     }
